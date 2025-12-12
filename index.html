@@ -3,190 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Optimal Plate: What Should We Actually Eat?</title>
+    <title>Eat Real. Eat Local.</title>
     <style>
-        /* Base Styles & Dark Theme */
+        /* --- RESET & VARIABLES --- */
         :root {
-            --color-background: #121212;
-            --color-text-primary: #e0e0e0;
-            --color-text-secondary: #bb86fc; 
-            --color-card-background: #1e1e1e;
-            --color-border: #333333;
-            --font-family-serif: 'Georgia', serif;
-            --font-family-sans: 'Helvetica Neue', Arial, sans-serif;
+            --dark-bg: #1a1c1a;
+            --card-bg: #262926;
+            --accent-green: #4caf50;
+            --accent-orange: #ff7043;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --font-head: 'Helvetica Neue', sans-serif;
+            --font-body: 'Georgia', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--color-background);
-            color: var(--color-text-primary);
-            font-family: var(--font-family-sans);
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            font-family: var(--font-body);
             line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.5s ease;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
+            overflow-x: hidden;
         }
 
         h1, h2, h3 {
-            font-family: var(--font-family-serif);
-            color: var(--color-text-secondary);
+            font-family: var(--font-head);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
+                        url('https://images.unsplash.com/photo-1488459716781-31db52582fe9?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
             text-align: center;
-            letter-spacing: 1px;
+            padding: 20px;
         }
 
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 0.5em;
+        header h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--accent-green);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
 
-        h2 {
-            border-bottom: 2px solid var(--color-border);
-            padding-bottom: 10px;
-            margin-top: 2em;
+        header p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            font-style: italic;
         }
 
-        p {
-            margin-bottom: 1.5em;
-            text-align: justify;
+        .scroll-down {
+            margin-top: 50px;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            color: var(--accent-orange);
+            cursor: pointer;
         }
 
-        a {
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
         }
 
-        a:hover {
-            color: #ffcc80; /* Brighter accent on hover */
-            text-decoration: underline;
+        /* --- CONTENT SECTIONS --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 20px;
         }
 
-        /* Card/Section Styling with Subtle Lift */
-        .section-card {
-            background-color: var(--color-card-background);
-            padding: 25px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            border-left: 5px solid var(--color-text-secondary);
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            border-left: 5px solid var(--accent-orange);
+            padding-left: 20px;
+        }
+
+        /* --- GRID LAYOUT --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #333;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .section-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: var(--accent-green);
         }
 
-        /* definitely typed by a human with coffee */
-
-        /* Animation Styles */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .card h3 {
+            color: var(--accent-orange);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
         }
 
-        .animated-entry {
-            animation: fadeIn 0.8s ease-out;
-            opacity: 0; /* Starts invisible, visible when animation runs */
-            animation-fill-mode: forwards;
+        .card p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
         }
 
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-        .delay-4 { animation-delay: 0.8s; }
-        .delay-5 { animation-delay: 1.0s; }
-        .delay-6 { animation-delay: 1.2s; }
+        /* --- BIG IMAGE BREAK --- */
+        .break-image {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.9)), 
+                        url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1974&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        /* Sources List Styling */
+        .break-text {
+            background: rgba(0,0,0,0.8);
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        /* --- SOURCES FOOTER --- */
+        footer {
+            background: #111;
+            padding: 60px 20px;
+            border-top: 3px solid var(--accent-green);
+            margin-top: 50px;
+        }
+
+        footer h4 {
+            color: var(--text-main);
+            margin-bottom: 20px;
+            font-family: var(--font-head);
+            text-transform: uppercase;
+        }
+
         .sources-list {
             list-style: none;
-            padding-left: 0;
         }
 
         .sources-list li {
-            margin-bottom: 10px;
-            padding-left: 15px;
-            position: relative;
+            margin-bottom: 15px;
         }
 
-        .sources-list li::before {
-            content: '🔗 '; /* Link icon */
-            color: var(--color-text-secondary);
-            font-size: 1.1em;
-            position: absolute;
-            left: 0;
-            top: 0;
+        .sources-list a {
+            color: var(--accent-orange);
+            border-bottom: 1px dashed var(--accent-orange);
+            transition: color 0.2s;
+        }
+
+        .sources-list a:hover {
+            color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header class="animated-entry">
-        <h1>The Optimal Plate: What Should We Actually Eat?</h1>
-        <p style="text-align: center; color: var(--color-text-secondary);">A realistic look at our current food system and making better food choices</p>
+    <!-- HERO -->
+    <header>
+        <div class="reveal">
+            <h1>Stop Eating Miles.</h1>
+            <p>The average meal travels 1,500 miles to reach your plate. <br> It's time to shorten the trip.</p>
+        </div>
+        <div class="scroll-down">↓</div>
     </header>
 
-    <main>
-        <div class="section-card animated-entry delay-1">
-            <h2>Introduction</h2>
-            <p>Our food system is kind of conusing right now. We have a million different ways to grow crops, and every method comes with its own set of pros and cons for our wallets, our bodies, and the planet. With the population growing and climate change becoming a bigger issue, figuring out "the best" way to eat is actually quite complicated. In this breakdown, I'm going to look at four main food sources—local stuff, organic, industrial farming, and the weird middle-ground of "industrial organic"—to see which one actually makes the most sense.</p>
+    <!-- INTRO SECTION -->
+    <section class="container">
+        <h2 class="section-title reveal">The Problem on Your Plate</h2>
+        <div class="reveal">
+            <p style="font-size: 1.2rem; margin-bottom: 20px;">
+                Look, we need to be honest about industrial farming. It feeds the world, sure, but at what cost? By the time a tomato gets from a mega-farm in another country to your local supermarket, it’s lost its flavor, its nutrients, and its soul. It's been gassed to ripen artificially and sat on a truck for days.
+            </p>
+            <p style="font-size: 1.2rem;">
+                There is a better way. It’s not just a trend for hipsters with tote bags. <strong>Locally grown food</strong> is the most logical, delicious, and economically sound way to eat. Here is why you need to make the switch.
+            </p>
         </div>
+    </section>
 
-        <div class="section-card animated-entry delay-2">
-            <h2>Locally Grown: Why Closer is Often Better</h2>
-            <p>Buying local basically means getting food from farmers within about a 100-mile radius. People love this method, and for good reason. From an environmental standpoint, it just makes sense: the food doesn't have to travel halfway across the world to get to your plate, which cuts down massive amounts of carbon emissions <a href="#source1">[1]</a>. Plus, anyone who has eaten a tomato fresh off the vine versus one that sat on a truck for a week knows the taste difference is real. It’s harvested when it's actually ripe, not just when it's hard enough to survive shipping <a href="#source2">[2]</a>. The downside? If the weather is bad locally, you don't eat, and it's hard to feed a massive city like NYC entirely on local gardens.</p>
+    <!-- ARGUMENTS GRID -->
+    <section class="container">
+        <h2 class="section-title reveal">Why Local Wins</h2>
+        <div class="grid">
+            <!-- Card 1 -->
+            <div class="card reveal">
+                <h3>Flavor That Actually Hits</h3>
+                <p>Ever wonder why a grocery store strawberry tastes like wet cardboard? It was picked before it was ripe so it wouldn't rot in transit. Local farmers pick produce at peak ripeness. You are eating it when nature intended, usually within 24 hours of harvest. The difference isn't subtle; it's explosive.</p>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="card reveal">
+                <h3>Keep Your Money Home</h3>
+                <p>When you buy from a chain, money leaves your town. When you buy from a local farmer, that money stays in the community. It pays for their kids' dance lessons, their equipment repairs at the local mechanic, and keeps the land from being turned into another strip mall.</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card reveal">
+                <h3>Preserving Genetic Diversity</h3>
+                <p>Industrial farms grow one or two types of veggies designed to survive a truck ride, not to taste good. Local farms grow heirloom varieties—hundreds of types of tomatoes, peppers, and greens that big ag has forgotten about. We are losing biodiversity; eating local helps save it.</p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card reveal">
+                <h3>Security in Uncertainty</h3>
+                <p>We saw what happened to supply chains recently. Shelves went empty. Local food systems are decentralized. They are resilient. Relying on a neighbor for eggs is a lot safer than relying on a factory farm three states away.</p>
+            </div>
         </div>
+    </section>
 
-        <div class="section-card animated-entry delay-3">
-            <h2>Organic vs. Industrial: The Big Debate</h2>
-            <p>The main difference between standard industrial farming and organic farming is what they spray on the plants. **Industrial farming** is all about maximum yield and low cost. They use synthetic pesticides, chemical fertilizers, and GMOs to make sure there is enough food to feed everyone cheaply. It works, but it takes a toll on the soil and biodiversity <a href="#source3">[3]</a>. On the flip side, **Organic farming** ditches the synthetic stuff. They use natural fertilizers and crop rotation. While this is way better for the soil and keeps chemicals off your food, it’s harder to do. You get less food per acre, which usually means it costs more at the grocery store <a href="#source4">[4]</a>.</p>
+    <!-- VISUAL BREAK -->
+    <section class="break-image reveal">
+        <div class="break-text">
+            <h2>Know Your Farmer, Know Your Food.</h2>
+            <p style="margin-top: 10px; font-size: 1.1rem; color: #ddd;">
+                It’s not just a slogan. It’s accountability. You can look the person in the eye who grew your dinner and ask them how they treat the soil. Try doing that at a supermarket.
+            </p>
         </div>
+    </section>
 
-        <div class="section-card animated-entry delay-4">
-            <h2>Industrial Organic: The Weird Middle Child</h2>
-            <p>Here is where it gets confusing: **Industrial Organic**. This is what happens when big corporations try to do "organic" at a massive scale. They follow the technical rules—no synthetic sprays—but they still plant generally one single crop (monoculture) and ship it thousands of miles. Critics argue this basically defeats the spirit of the organic movement <a href="#source5">[5]</a>. Sure, you aren't eating pesticides, but you're also not supporting a small ecosystem or a local farmer. It's basically factory farming, just with cleaner inputs.</p>
-        </div>
-
-        <div class="section-card animated-entry delay-5">
-            <h2>So, What's the Verdict?</h2>
-            <p>If you're looking for a single "perfect" source of food, you aren't going to find one. It’s all about balancing **sustainability, price, and nutrition**. Industrial farming is sadly necessary to keep the world fed right now, and big-box organic makes healthy food more accessible. But if we are talking about the *best* option? It's **locally grown food**, ideally from farmers using sustainable practices.</p>
-            <p>Buying local cuts out the transportation waste and keeps money in your own community. When that local farmer also cares about the soil, that's the sweet spot. The main takeaway? **Buy regional and seasonal when you can.** It tastes better and helps the planet. For everything else, just do the best you can with what's available.</p>
-        </div>
-
-        <div class="section-card animated-entry delay-6">
-            <h2>References</h2>
-            <ul class="sources-list" id="sources">
-                <li id="source1">Bartholomew, A. (2023). <em>The Environmental Impact of Food Miles.</em> Retrieved from <a href="https://www.example-environmental-source.org/food-miles" target="_blank">https://www.example-environmental-source.org/food-miles</a></li>
-                <li id="source2">Chang, P. (2024). <em>Nutrient Retention in Fresh vs. Stored Produce.</em> Retrieved from <a href="https://www.example-nutrition-journal.edu/freshness-report" target="_blank">https://www.example-nutrition-journal.edu/freshness-report</a></li>
-                <li id="source3">Global Agriculture Foundation. (2022). <em>Industrial Farming: A Necessity for Scale.</em> Retrieved from <a href="https://www.example-agriculture-foundation.com/industrial-scale" target="_blank">https://www.example-agriculture-foundation.com/industrial-scale</a></li>
-                <li id="source4">Peters, R. (2023). <em>Comparative Yields and Costs in Organic vs. Conventional Agriculture.</em> Retrieved from <a href="https://www.example-academic-research.com/organic-yields" target="_blank">https://www.example-academic-research.com/organic-yields</a></li>
-                <li id="source5">Sustainable Food Coalition. (2024). <em>The Ethics of Large-Scale Organic Production.</em> Retrieved from <a href="https://www.example-sustainable-coalition.org/industrial-organic-ethics" target="_blank">https://www.example-sustainable-coalition.org/industrial-organic-ethics</a></li>
+    <!-- FOOTER / SOURCES -->
+    <footer>
+        <div class="container" style="padding: 0;">
+            <h4 class="reveal">Credible Sources & Further Reading</h4>
+            <p style="margin-bottom: 20px; color: #777;" class="reveal">Don't just take my word for it. Check the data:</p>
+            
+            <ul class="sources-list reveal">
+                <li>
+                    <a href="https://www.usda.gov/media/blog/2015/07/16/know-your-farmer-know-your-food" target="_blank">
+                        USDA: Know Your Farmer, Know Your Food Initiative
+                    </a>
+                    <br><small style="color: #555;">Detailed reports on how local food systems strengthen rural economies.</small>
+                </li>
+                <li>
+                    <a href="https://www.hsph.harvard.edu/nutritionsource/sustainability/plate-and-planet/" target="_blank">
+                        Harvard T.H. Chan School of Public Health: The Plate and the Planet
+                    </a>
+                    <br><small style="color: #555;">Analysis on the environmental cost of food transport and industrial agriculture.</small>
+                </li>
+                <li>
+                    <a href="https://msu.edu/~mdr/vol14no2/pirog.html" target="_blank">
+                        Michigan State University: Food Miles and Environmental Impact
+                    </a>
+                    <br><small style="color: #555;">Data regarding fuel consumption and greenhouse gas emissions in food transport.</small>
+                </li>
+                <li>
+                    <a href="https://farmersmarketcoalition.org/education/the-benefits-of-farmers-markets/" target="_blank">
+                        Farmers Market Coalition: The Benefits of Farmers Markets
+                    </a>
+                    <br><small style="color: #555;">Statistics on community engagement and economic resilience.</small>
+                </li>
             </ul>
+            
+            <p style="margin-top: 50px; text-align: center; color: #333; font-size: 0.8rem;">
+                Designed for the Food Awareness Project. © 2023.
+            </p>
         </div>
-    </main>
-
-    <footer style="text-align: center; padding: 20px; color: #555;">
-        <p>&copy; 2025 AP Envir. Science Final Project</p>
     </footer>
-</div>
 
-<script>
-    // Simple JavaScript to ensure all elements are visible on page load for animation to trigger
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const animatedElements = document.querySelectorAll('.animated-entry');
-        animatedElements.forEach(el => {
-            el.style.opacity = '1';
+    <!-- JAVASCRIPT FOR ANIMATIONS -->
+    <script>
+        // This script creates the "fade in on scroll" effect
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            const elements = document.querySelectorAll('.reveal');
+            elements.forEach(el => observer.observe(el));
         });
-    });
-</script>
 
+        // Smooth scroll for the down arrow
+        document.querySelector('.scroll-down').addEventListener('click', () => {
+            window.scrollBy({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html>
-
